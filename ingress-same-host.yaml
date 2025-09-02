@@ -10,10 +10,10 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - app.example.com
+        - kubevpro.basquiat.app
       secretName: tls-cert
   rules:
-    - host: app.example.com
+    - host: kubevpro.basquiat.app
       http:
         paths:
           - path: /api
