@@ -27,22 +27,43 @@ spec:
               value: "production"
             - name: PORT
               value: "8080"
+
+            # App secrets
             - name: SESSION_SECRET
-              value: "change-me-session-secret"
-            - name: REDIS_HOST
-              value: "redis"
-            - name: REDIS_PORT
-              value: "6379"
-            - name: DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: api-secrets
+                  key: SESSION_SECRET
+
+            # CORS (set to your frontend domain)
+            - name: CORS_ORIGIN
+              value: "https://kubevpro.basquiat.app"
+
+            # Redis
+            - name: REDIS_URL
+              value: "redis://redis:6379"
+
+            # MySQL
+            - name: MYSQL_HOST
               value: "mysql"
-            - name: DB_PORT
+            - name: MYSQL_PORT
               value: "3306"
-            - name: DB_USER
-              value: "appuser"
-            - name: DB_PASSWORD
-              value: "app-password"
-            - name: DB_NAME
-              value: "appdb"
+            - name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: username
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: password
+            - name: MYSQL_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: database
+
           readinessProbe:
             httpGet:
               path: /api/health
@@ -51,6 +72,7 @@ spec:
             periodSeconds: 10
             timeoutSeconds: 2
             failureThreshold: 6
+
           livenessProbe:
             httpGet:
               path: /api/health
@@ -59,6 +81,7 @@ spec:
             periodSeconds: 20
             timeoutSeconds: 3
             failureThreshold: 3
+
           resources:
             requests:
               cpu: "100m"
