@@ -5,13 +5,9 @@ metadata:
   namespace: modular-express
   annotations:
     kubernetes.io/ingress.class: nginx
-    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"   # ensure no HTTPS redirect
 spec:
   ingressClassName: nginx
-  tls:
-    - hosts:
-        - kubevpro.basquiat.app
-      secretName: tls-cert
   rules:
     - host: kubevpro.basquiat.app
       http:
