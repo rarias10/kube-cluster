@@ -84,6 +84,15 @@ spec:
             timeoutSeconds: 2
             failureThreshold: 6
 
+          startupProbe:
+            httpGet:
+              path: /api/health
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 10
+
           livenessProbe:
             httpGet:
               path: /api/health
